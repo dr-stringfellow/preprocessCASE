@@ -23,7 +23,6 @@ with h5py.File(filename, "r") as f:
 
     sig_mask = (f["jet_kinematics"][:,1:2][:,0] < deta_jj)
     side_mask = (f["jet_kinematics"][:,1:2][:,0] > deta_jj)
-    #print(mask)
 
     # Preparing signal region files
     sig_pf1 = np.array(f["jet1_PFCands"])[sig_mask].astype(np.float16)
