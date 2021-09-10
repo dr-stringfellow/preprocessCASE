@@ -18,6 +18,9 @@ with h5py.File(filename, "r") as f:
     #print("Keys: %s" % f.keys())
     #print(f["jet_kinematics"][:,1:2][:,0])
 
+    # Input categories explained here
+    # https://github.com/case-team/CASEUtils/tree/master/H5_maker
+
     sig_mask = (f["jet_kinematics"][:,1:2][:,0] < deta_jj)
     side_mask = (f["jet_kinematics"][:,1:2][:,0] > deta_jj)
     #print(mask)
