@@ -2,17 +2,31 @@ import h5py
 import numpy as np
 from re import sub
 import sys
+import pathlib
 
 deta_jj = 1.4
 
 filename = sys.argv[1]
+outdir = sys.argv[2]
 
 with h5py.File(filename, "r") as f:
 
-    f_sig = sub('\.h5$', '_sig.h5', filename)
-    f_side = sub('\.h5$', '_side.h5', filename)
-    sig_hf = h5py.File(f_sig, 'w')
-    side_hf = h5py.File(f_side, 'w')
+    path = pathlib.PurePath(filename)
+    lastFolder = path.parent.name
+
+    fshort = filename.split("/")[-1]
+    f_sig = sub('\.h5$', '_sig.h5', fshort)
+    f_side = sub('\.h5$', '_side.h5', fshort)
+    
+    dir_sig = outdir+'/'+lastFolder+'_sig/'
+    dir_side = outdir+'/'+lastFolder+'_side/'
+
+    for d in [dir_sig,dir_side]:
+        if not os.path.exists(d):
+            os.makedirs(d)
+
+    sig_hf = h5py.File(dir_sig+f_sig, 'w')
+    side_hf = h5py.File(dir_side+f_side, 'w')
 
     # List all groups
     #print("Keys: %s" % f.keys())
