@@ -10,7 +10,7 @@ jPt = 400
 
 def xyze_to_eppt(constituents):
     ''' converts an array [N x 100, 4] of particles
-from px, py, pz, E to eta, phi, pt (mass omitted)
+from px, py, pz, E to pt, eta, phi (mass omitted)
     '''
     PX, PY, PZ, E = range(4)
     pt = np.sqrt(np.float_power(constituents[:,:,PX], 2) + np.float_power(constituents[:,:,PY], 2), dtype='float32') # numpy.float16 dtype -> float power to avoid overflow
