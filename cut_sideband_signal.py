@@ -4,7 +4,9 @@ from re import sub
 import sys
 
 filename = sys.argv[1]
+outpath = sys.argv[2]
 deta_jj = 1.4
+jPt = 400
 
 def xyze_to_eppt(constituents):
     ''' converts an array [N x 100, 4] of particles
@@ -21,6 +23,8 @@ with h5py.File(filename, "r") as f:
 
     f_sig = sub('\.h5$', '_sig.h5', filename)
     f_side = sub('\.h5$', '_side.h5', filename)
+    f_sig = outpath + f_sig.split('/')[-1]
+    f_side = outpath + f_side.split('/')[-1]
     sig_hf = h5py.File(f_sig, 'w')
     side_hf = h5py.File(f_side, 'w')
 
@@ -29,8 +33,10 @@ with h5py.File(filename, "r") as f:
     #a_group_key = list(f.keys())[0]
     #print(f["jet_kinematics"][:,1:2][:,0])
 
-    sig_mask = (f["jet_kinematics"][:,1:2][:,0] < deta_jj)
-    side_mask = (f["jet_kinematics"][:,1:2][:,0] > deta_jj)
+    pt_mask_1 = (f["jet_kinematics"][:,2:3][:,0] > jPt)
+    pt_mask_2 = (f["jet_kinematics"][:,6:7][:,0] > jPt)
+    sig_mask = (f["jet_kinematics"][:,1:2][:,0] < deta_jj) & pt_mask_1 & pt_mask_2
+    side_mask = (f["jet_kinematics"][:,1:2][:,0] > deta_jj) & pt_mask_1 & pt_mask_2
 
     #print(f["jet_kinematics"][:,1:2][:,0])
     #print(np.reshape(f["jet_kinematics"][:,2],(-1,1)))
